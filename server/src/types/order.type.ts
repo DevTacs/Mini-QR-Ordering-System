@@ -4,16 +4,28 @@ export interface Order extends RowDataPacket {
     OrderId: number
     OrderNumber: number
     ProductId: number
+    Quantity: number
+    TotalPrice: number
     PaymentStatus: PaymentStatus
+    CreatedAt: string
+}
+
+export type CreateOrderPayload = {
+    Items: {
+        ProductId: number
+        Quantity: number
+    }[]
 }
 
 export interface CreateOrder {
     OrderNumber: number
     ProductId: number
+    Quantity: number
+    TotalPrice: number
     PaymentStatus: PaymentStatus
 }
 
-export type PaymentStatus = {
-    Pending: "Pending"
-    Complete: "Complete"
+export enum PaymentStatus {
+    Pending,
+    Complete,
 }
