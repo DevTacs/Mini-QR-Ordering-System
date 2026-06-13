@@ -56,11 +56,15 @@ export const createOrderService = async (data: CreateOrderPayload) => {
                 throw createHttpError(400, "Insufficient stock")
             }
 
-            await deductStockByProductIdRepository(
+            const result = await deductStockByProductIdRepository(
                 conn,
                 item.ProductId,
                 item.Quantity,
             )
+
+            if (result == 0) {
+                throw createHttpError(400, "Stock update failed")
+            }
 
             // insert order item
             const orderResult = await createOrderRepository(conn, {
