@@ -9,50 +9,109 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as ProductsRouteImport } from './routes/products'
+import { Route as IndexRouteImport } from './routes/index'
+import { Route as CartIndexRouteImport } from './routes/cart/index'
+import { Route as AdminOrdersIndexRouteImport } from './routes/admin/orders/index'
+import { Route as AdminOrdersOrderNumberRouteImport } from './routes/admin/orders/$orderNumber'
 
-const ProductsRoute = ProductsRouteImport.update({
-  id: '/products',
-  path: '/products',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CartIndexRoute = CartIndexRouteImport.update({
+  id: '/cart/',
+  path: '/cart/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminOrdersIndexRoute = AdminOrdersIndexRouteImport.update({
+  id: '/admin/orders/',
+  path: '/admin/orders/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminOrdersOrderNumberRoute = AdminOrdersOrderNumberRouteImport.update({
+  id: '/admin/orders/$orderNumber',
+  path: '/admin/orders/$orderNumber',
   getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
-  '/products': typeof ProductsRoute
+  '/': typeof IndexRoute
+  '/cart/': typeof CartIndexRoute
+  '/admin/orders/$orderNumber': typeof AdminOrdersOrderNumberRoute
+  '/admin/orders/': typeof AdminOrdersIndexRoute
 }
 export interface FileRoutesByTo {
-  '/products': typeof ProductsRoute
+  '/': typeof IndexRoute
+  '/cart': typeof CartIndexRoute
+  '/admin/orders/$orderNumber': typeof AdminOrdersOrderNumberRoute
+  '/admin/orders': typeof AdminOrdersIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/products': typeof ProductsRoute
+  '/': typeof IndexRoute
+  '/cart/': typeof CartIndexRoute
+  '/admin/orders/$orderNumber': typeof AdminOrdersOrderNumberRoute
+  '/admin/orders/': typeof AdminOrdersIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/products'
+  fullPaths: '/' | '/cart/' | '/admin/orders/$orderNumber' | '/admin/orders/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/products'
-  id: '__root__' | '/products'
+  to: '/' | '/cart' | '/admin/orders/$orderNumber' | '/admin/orders'
+  id:
+    | '__root__'
+    | '/'
+    | '/cart/'
+    | '/admin/orders/$orderNumber'
+    | '/admin/orders/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  ProductsRoute: typeof ProductsRoute
+  IndexRoute: typeof IndexRoute
+  CartIndexRoute: typeof CartIndexRoute
+  AdminOrdersOrderNumberRoute: typeof AdminOrdersOrderNumberRoute
+  AdminOrdersIndexRoute: typeof AdminOrdersIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/products': {
-      id: '/products'
-      path: '/products'
-      fullPath: '/products'
-      preLoaderRoute: typeof ProductsRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cart/': {
+      id: '/cart/'
+      path: '/cart'
+      fullPath: '/cart/'
+      preLoaderRoute: typeof CartIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/orders/': {
+      id: '/admin/orders/'
+      path: '/admin/orders'
+      fullPath: '/admin/orders/'
+      preLoaderRoute: typeof AdminOrdersIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/orders/$orderNumber': {
+      id: '/admin/orders/$orderNumber'
+      path: '/admin/orders/$orderNumber'
+      fullPath: '/admin/orders/$orderNumber'
+      preLoaderRoute: typeof AdminOrdersOrderNumberRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
-  ProductsRoute: ProductsRoute,
+  IndexRoute: IndexRoute,
+  CartIndexRoute: CartIndexRoute,
+  AdminOrdersOrderNumberRoute: AdminOrdersOrderNumberRoute,
+  AdminOrdersIndexRoute: AdminOrdersIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
