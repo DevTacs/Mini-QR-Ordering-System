@@ -6,8 +6,9 @@ import {
     useNavigate,
 } from "@tanstack/react-router"
 import {Button} from "@/components/ui/button"
-import {ShoppingCart} from "lucide-react"
+import {QrCode, ShoppingCart} from "lucide-react"
 import {useCart} from "@/hooks/cart/useCart"
+import {exportQR} from "@/utils/qr-code"
 
 export const Route = createRootRoute({
     component: RootLayout,
@@ -38,11 +39,21 @@ function RootLayout() {
                         )}
 
                         {location.pathname.startsWith("/admin/orders") && (
-                            <Link
-                                to="/admin/orders"
-                                className="text-xs sm:text-sm text-gray-300 hover:text-white">
-                                Orders
-                            </Link>
+                            <>
+                                <Link
+                                    to="/admin/orders"
+                                    className="text-xs sm:text-sm text-gray-300 hover:text-white">
+                                    Orders
+                                </Link>
+                                <button
+                                    onClick={exportQR}
+                                    className="text-xs sm:text-sm text-gray-300 hover:text-white">
+                                    <div className="flex flex-row gap-2 items-center">
+                                        Export QR
+                                        <QrCode className="text-amber-600" />
+                                    </div>
+                                </button>
+                            </>
                         )}
 
                         {!location.pathname.startsWith("/admin/orders") && (
