@@ -101,3 +101,24 @@ API:
 ```
 http://localhost:3000
 ```
+
+## Navigate through features
+
+### Customer Flow
+
+1. Open the homepage: http://localhost:5173/
+2. Browse products
+3. Add items to cart
+4. Update quantity or remove items
+5. Proceed to checkout (mock payment flow: success and failed)
+
+### Admin Flow
+
+1. Open the admin orders page: http://localhost:5173/admin/orders
+2. Update payment status: (pending -> failed or paid, failed -> pending or success)
+3. Click the order for more details
+
+### QR Feature
+
+- Admin can generate/export QR code
+- QR leads users directly to the ordering page
