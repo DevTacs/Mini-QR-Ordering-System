@@ -1,9 +1,8 @@
 import {createFileRoute} from "@tanstack/react-router"
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card"
 import {Badge} from "@/components/ui/badge"
-import {useQuery} from "@tanstack/react-query"
-import {getOrderDetailsByOrderNumberService} from "@/services/order.service"
 import type {OrderDetails} from "@/types/order.type"
+import {useDetails} from "@/hooks/order/useDetails"
 
 export const Route = createFileRoute("/admin/orders/$orderNumber")({
     component: RouteComponent,
@@ -17,14 +16,9 @@ const statusMap: Record<number, {label: string; className: string}> = {
 
 function RouteComponent() {
     const {orderNumber} = Route.useParams()
-    const {data: orderDetails} = useQuery({
-        queryKey: ["orderDetails", orderNumber],
-        queryFn: () => getOrderDetailsByOrderNumberService(Number(orderNumber)),
-    })
+    const {data: orderDetails} = useDetails({orderNumber: Number(orderNumber)})
 
-    if (!orderDetails) return null
-
-    console.log(orderDetails)
+    if (!orderDetails) return <div>Not found</div>
 
     const total = orderDetails.data.reduce(
         (sum, item) => sum + Number(item.totalPrice),

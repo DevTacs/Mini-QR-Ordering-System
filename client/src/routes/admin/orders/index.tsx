@@ -7,12 +7,8 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
-import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query"
-import {
-    getOrderSummaryService,
-    updatePaymentStatusService,
-} from "@/services/order.service"
-import {toast} from "sonner"
+import {useUpdateStatus} from "@/hooks/order/useUpdateStatus"
+import {useSummary} from "@/hooks/order/useSummary"
 
 export const Route = createFileRoute("/admin/orders/")({
     component: RouteComponent,
@@ -25,34 +21,9 @@ const statusMap: Record<number, {label: string; className: string}> = {
 }
 
 function RouteComponent() {
-    const queryClient = useQueryClient()
     const navigate = useNavigate()
-    const {data: orders} = useQuery({
-        queryKey: ["orders"],
-        queryFn: getOrderSummaryService,
-    })
-
-    const {mutateAsync} = useMutation({
-        mutationKey: ["update-payment-status"],
-        mutationFn: async ({
-            orderNumber,
-            paymentStatus,
-        }: {
-            orderNumber: number
-            paymentStatus: number
-        }) => await updatePaymentStatusService({orderNumber, paymentStatus}),
-        onSuccess: async () => {
-            await queryClient.invalidateQueries({queryKey: ["orders"]})
-            toast.success("Payment status updated successfully", {
-                id: "update-payment-status",
-            })
-        },
-        onError: () => {
-            toast.error("Payment status update failed", {
-                id: "update-payment-status",
-            })
-        },
-    })
+    const {data: orders} = useSummary()
+    const {mutateAsync} = useUpdateStatus()
 
     async function handlePaymentStatusUpdate({
         orderNumber,
