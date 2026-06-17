@@ -3,7 +3,6 @@ import {getAllProductsService} from "../services/product.service.js"
 
 export const getAllProducts = async (req: Request, res: Response) => {
     const result = await getAllProductsService()
-    console.log(result)
     const products = result.map((item) => ({
         ...item,
         price: Number(item.price),
