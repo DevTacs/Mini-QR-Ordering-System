@@ -115,7 +115,7 @@ http://localhost:3000
 ### Admin Flow
 
 1. Open the admin orders page: http://localhost:5173/admin/orders
-2. Update payment status: (pending -> failed or paid, failed -> pending or success)
+2. Update payment status: (pending -> failed or paid, failed -> pending or paid)
 3. Click the order for more details
 
 ### QR Feature
