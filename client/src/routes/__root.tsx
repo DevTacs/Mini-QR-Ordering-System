@@ -18,18 +18,22 @@ function RootLayout() {
     const location = useLocation()
     const navigate = useNavigate()
     const {data: cart} = useCart()
+
     const cartCount = cart?.reduce((sum, item) => sum + item.quantity, 0) ?? 0
 
     return (
         <div className="min-h-screen bg-gray-950 text-white">
             <header className="border-b border-gray-800 bg-gray-950/80 backdrop-blur">
-                <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 sm:px-6 sm:py-4">
-                    <h1 className="text-base sm:text-xl font-semibold tracking-tight">
+                <div className="mx-auto flex max-w-6xl flex-col gap-3 px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:px-6 sm:py-4">
+                    {/* Logo */}
+                    <h1 className="text-sm sm:text-xl font-semibold tracking-tight">
                         Mini<span className="text-amber-600">QROrdering</span>
                         System
                     </h1>
 
-                    <div className="flex items-center gap-2 sm:gap-4">
+                    {/* Actions */}
+                    <div className="flex flex-wrap items-center gap-2 sm:gap-4">
+                        {/* Cart page link */}
                         {location.pathname === "/cart" && (
                             <Link
                                 to="/"
@@ -38,6 +42,7 @@ function RootLayout() {
                             </Link>
                         )}
 
+                        {/* Admin section */}
                         {location.pathname.startsWith("/admin/orders") && (
                             <>
                                 <Link
@@ -45,24 +50,24 @@ function RootLayout() {
                                     className="text-xs sm:text-sm text-gray-300 hover:text-white">
                                     Orders
                                 </Link>
+
                                 <button
                                     onClick={exportQR}
-                                    className="text-xs sm:text-sm text-gray-300 hover:text-white">
-                                    <div className="flex flex-row gap-2 items-center">
-                                        Export QR
-                                        <QrCode className="text-amber-600" />
-                                    </div>
+                                    className="flex items-center gap-1 text-xs sm:text-sm text-gray-300 hover:text-white">
+                                    Export QR
+                                    <QrCode className="h-4 w-4 text-amber-600" />
                                 </button>
                             </>
                         )}
 
+                        {/* Cart button */}
                         {!location.pathname.startsWith("/admin/orders") && (
                             <Button
-                                className="relative rounded-xl bg-amber-600 px-3 sm:px-4"
+                                className="relative flex items-center gap-2 rounded-xl bg-amber-600 px-3 py-2 sm:px-4"
                                 onClick={() => navigate({to: "/cart"})}>
                                 <ShoppingCart className="h-4 w-4 sm:h-5 sm:w-5" />
 
-                                <span className="ml-2 hidden sm:inline">
+                                <span className="text-xs sm:text-sm">
                                     My Cart
                                 </span>
 
@@ -77,7 +82,8 @@ function RootLayout() {
                 </div>
             </header>
 
-            <main className="mx-auto max-w-6xl p-6">
+            {/* Content */}
+            <main className="mx-auto max-w-6xl px-4 py-4 sm:p-6">
                 <Outlet />
             </main>
         </div>

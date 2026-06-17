@@ -37,18 +37,23 @@ function RouteComponent() {
 
     return (
         <div className="space-y-6">
+            {/* Header */}
             <div>
-                <h1 className="text-2xl font-semibold">Orders</h1>
-                <p className="text-sm text-gray-400">
+                <h1 className="text-xl sm:text-2xl font-semibold">Orders</h1>
+                <p className="text-xs sm:text-sm text-gray-400">
                     Browse through a list of orders
                 </p>
             </div>
-            <div className="rounded-lg border border-gray-800">
-                <table className="w-full text-sm">
+
+            {/* TABLE WRAPPER */}
+            <div className="rounded-lg border border-gray-800 overflow-x-auto">
+                <table className="w-full min-w-175 text-sm">
                     <thead className="bg-gray-900 text-gray-300">
                         <tr>
                             <th className="p-3 text-left">Order #</th>
-                            <th className="p-3 text-left">Items</th>
+                            <th className="p-3 text-left hidden sm:table-cell">
+                                Items
+                            </th>
                             <th className="p-3 text-left">Total</th>
                             <th className="p-3 text-left">Status</th>
                             <th className="p-3 text-left">Update</th>
@@ -56,29 +61,40 @@ function RouteComponent() {
                     </thead>
 
                     <tbody>
-                        {orders && orders.data.length === 0 ? (
-                            <p>No orders found</p>
+                        {!orders?.data?.length ? (
+                            <tr>
+                                <td
+                                    colSpan={5}
+                                    className="p-4 text-center text-gray-400">
+                                    No orders found
+                                </td>
+                            </tr>
                         ) : (
-                            orders &&
                             orders.data.map((order) => (
                                 <tr
                                     key={order.orderNumber}
-                                    onClick={() => {
+                                    onClick={() =>
                                         navigate({
                                             to: `/admin/orders/${order.orderNumber}`,
                                         })
-                                    }}
-                                    className="border-t border-gray-800 hover:bg-gray-900/50">
-                                    <td className="p-3">
+                                    }
+                                    className="border-t border-gray-800 hover:bg-gray-900/50 cursor-pointer">
+                                    {/* Order # */}
+                                    <td className="p-3 font-medium">
                                         #{order.orderNumber}
                                     </td>
 
-                                    <td className="p-3">{order.itemsCount}</td>
+                                    {/* Items (hidden on mobile) */}
+                                    <td className="p-3 hidden sm:table-cell">
+                                        {order.itemsCount}
+                                    </td>
 
-                                    <td className="p-3">
+                                    {/* Total */}
+                                    <td className="p-3 whitespace-nowrap">
                                         Php {order.overallTotal}
                                     </td>
 
+                                    {/* Status */}
                                     <td className="p-3">
                                         <Badge
                                             className={
@@ -92,7 +108,10 @@ function RouteComponent() {
                                         </Badge>
                                     </td>
 
-                                    <td className="p-3">
+                                    {/* Update */}
+                                    <td
+                                        className="p-3"
+                                        onClick={(e) => e.stopPropagation()}>
                                         <Select
                                             value={String(order.paymentStatus)}
                                             disabled={order.paymentStatus === 1}
@@ -106,7 +125,7 @@ function RouteComponent() {
                                                     },
                                                 )
                                             }>
-                                            <SelectTrigger className="w-35 border-gray-700">
+                                            <SelectTrigger className="w-[120px] border-gray-700 text-xs">
                                                 <SelectValue placeholder="Update" />
                                             </SelectTrigger>
 
