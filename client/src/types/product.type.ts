@@ -1,6 +1,4 @@
-import type {RowDataPacket} from "mysql2"
-
-export interface Product extends RowDataPacket {
+export type Product = {
     productId: number
     name: string
     description: string

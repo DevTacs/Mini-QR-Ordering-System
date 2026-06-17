@@ -1,31 +1,54 @@
 import type {RowDataPacket} from "mysql2"
 
 export interface Order extends RowDataPacket {
-    OrderId: number
-    OrderNumber: number
-    ProductId: number
-    Quantity: number
-    TotalPrice: number
-    PaymentStatus: PaymentStatus
-    CreatedAt: string
+    orderId: number
+    orderNumber: number
+    productId: number
+    quantity: number
+    totalPrice: number
+    paymentStatus: PaymentStatus
+    createdAt: string
+}
+
+export interface OrderSummary extends RowDataPacket {
+    orderNumber: number
+    overallTotal: number
+    paymentStatus: number
+    itemsCount: number
+}
+
+export interface OrderDetails extends RowDataPacket {
+    orderId: number
+    orderNumber: number
+    quantity: number
+    totalPrice: number
+    paymentStatus: PaymentStatus
+    createdAt: string
+    productId: number
+    name: string
+    description: string
+    price: number
+    imageUrl: string
 }
 
 export type CreateOrderPayload = {
-    Items: {
-        ProductId: number
-        Quantity: number
+    items: {
+        productId: number
+        quantity: number
     }[]
+    paymentStatus: PaymentStatus
 }
 
 export interface CreateOrder {
-    OrderNumber: number
-    ProductId: number
-    Quantity: number
-    TotalPrice: number
-    PaymentStatus: PaymentStatus
+    orderNumber: number
+    productId: number
+    quantity: number
+    totalPrice: number
+    paymentStatus: PaymentStatus
 }
 
 export enum PaymentStatus {
-    Pending,
-    Complete,
+    Pending = 0,
+    Paid = 1,
+    Failed = 2,
 }
